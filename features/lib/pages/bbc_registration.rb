@@ -42,6 +42,23 @@ class BBC_Registration
     find("#form-message-email").text
   end
 
+  def parent_email
+    fill_in('Parent or guardian email', with: "no123@more.see")
+  end
+
+  def guardian_email_sent_page
+    page.has_content?('Email sent. Now check your inbox and follow the instructions')
+  end
+
+  def wrong_birthdate
+    fill_in('Day', with: '26')
+    sleep 1
+    fill_in('Month', with: '1')
+    sleep 1
+    fill_in('Year', with: '2008')
+    sleep 1
+  end
+
   def enter_birthdate
     sleep 1
     fill_in('Day', with: '19')
@@ -51,31 +68,21 @@ class BBC_Registration
     fill_in('Year', with: '1994')
   end
 
+  def too_young
+    page.has_content?('Sorry, you need to be 13 or over.')
+  end
 
 
-  def enter_email_hack
-
-    sleep 1
-    fill_in('email', with: 'nick.harry@lala.com')
-    sleep 1
-    fill_in('password', with: 'capybara-platypus')
-    sleep 1
-    fill_in('postcode', with: 'SW5 7BB')
-    sleep 1
-    select "Other", from: "Gender"
+  def click_stuff
     click_button "What's in these?"
     sleep 2
-
     click_button "What's in these?"
-    #
-    # click_button ("No, Thanks")
 
     all(".button__text-wrapper").each do |button|
       if button.text == "No, thanks"
         button.click
       end
     end
-
     sleep 2
   end
 
